@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container{
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+        }
+        body{
+            background-color: black;
+            color: white;
+        }
+        .board{
+            border: 1px solid #e4e4e4;
+            height: 80vh;
+            width: 200px;
+            padding:10px;
+            border-radius: 10px;
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        }
+
+        .items{
+            margin-top: 10px;
+        }
+        .item{
+            border: 1px solid;
+            padding: 15px 8px;
+            margin-top: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .item:hover{
+            background: white;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="todo-board" class="board">
+            <h4>Todo</h4>
+            <div class="itmes">
+                <p draggable="true" class="item">learn react</p>
+                <p draggable="true" class="item">learn js</p>
+
+            </div>
+        </div>
+        <div id="progress-board" class="board">
+            <h4>In progress</h4>
+        </div>
+        <div id="done-board" class="board">
+            <h4>Done</h4>
+        </div>
+    </div>
+    <button id="add-task-btn">Add Task</button>
+
+    <script>
+        const addTaskBtn = document.getElementById('add-task-btn');
+        const todoBoard = document.getElementById('todo-board');
+
+        function attachDragEvents(target){
+            target.addEventListener('dragstart',()=>{
+                target.classList.add('flying');
+            });
+            target.addEventListener('dragend',()=>{
+                target.classList.remove('flying');
+            });
+        }
+
+        addTaskBtn.addEventListener('click',()=>{
+           const input= prompt('What is the task?');
+           if(!input) return 
+
+           const taskCard= document.createElement('p');
+           taskCard.classList.add('item');
+           taskCard.setAttribute('draggable',true);
+           taskCard.innerText = input;
+
+           attachDragEvents(taskCard)
+
+
+           todoBoard.appendChild(taskCard);
+        });
+
+
+        // const allBoards = document.getElementsByClassName('board')
+        const allBoards = document.querySelectorAll('.board');
+        const allItems = document.querySelectorAll('.item');
+
+        allItems.forEach(attachDragEvents);
+
+        allBoards.forEach(board=>{
+            board.addEventListener('dragover',()=>{
+                const flyingElement = document.querySelector('.flying');
+                console.log(board, 'Kuch toh mere upar se gaya',flyingElement);
+
+                board.appendChild(flyingElement);
+                
+            })
+        })
+
+ 
+
+    </script>
+</body>
+</html>
